@@ -7,6 +7,7 @@ Created By
 
 Contributors
 ------------
+#. `alvaroriosch <http://github.com/alvaroriosch>`_
 #. `shaunsephton <http://github.com/shaunsephton>`_
 #. And others `<https://github.com/shaunsephton/django-ckeditor/graphs/contributors>`_
 
