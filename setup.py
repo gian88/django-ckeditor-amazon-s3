@@ -8,16 +8,17 @@ def get_source_files():
             yield os.path.join('/'.join(dirname.split('/')[1:]), filename)
 
 setup(
-    name='django-ckeditor',
-    version='4.0.2',
-    description='Django admin CKEditor integration.',
+    name='django-ckeditor-amazon-s3',
+    version='1.0',
+    description='Django Ckeditor Amazon S3',
     long_description=open('README.rst', 'r').read() + open('AUTHORS.rst', 'r').read() + open('CHANGELOG.rst', 'r').read(),
-    author='Shaun Sephton',
-    author_email='connect@shaunsephton.com',
-    url='http://github.com/shaunsephton/django-ckeditor',
+    author='Gianfranco Lemmo',
+    author_email='gianfranco@webbizarro.com',
+    url='http://github.com/gian88/django-ckeditor-amazon-s3',
     packages=find_packages(exclude=['project', ]),
     install_requires=[
         'Pillow',
+        'boto'
     ],
     include_package_data=True,
     exclude_package_data={

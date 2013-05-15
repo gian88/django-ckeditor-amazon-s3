@@ -396,3 +396,10 @@ django_ckeditor.egg-info/dependency_links.txt
 django_ckeditor.egg-info/not-zip-safe
 django_ckeditor.egg-info/requires.txt
 django_ckeditor.egg-info/top_level.txt
+dist/django_ckeditor_amazon_s3-1.0-py2.7.egg
+django_ckeditor_amazon_s3.egg-info/PKG-INFO
+django_ckeditor_amazon_s3.egg-info/SOURCES.txt
+django_ckeditor_amazon_s3.egg-info/dependency_links.txt
+django_ckeditor_amazon_s3.egg-info/not-zip-safe
+django_ckeditor_amazon_s3.egg-info/requires.txt
+django_ckeditor_amazon_s3.egg-info/top_level.txt
