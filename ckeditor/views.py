@@ -85,7 +85,7 @@ def create_thumbnail(out, filename, types):
     if image.mode not in ('L', 'RGB'):
         image = image.convert('RGB')
 
-    # scale and crop to thumbnail
+    # scale and crop to thumbnail and the main image
     if types:
         imagefit = ImageOps.fit(image, THUMBNAIL_SIZE, Image.ANTIALIAS)
         imagefit = ImageOps.posterize(imagefit, 8)
@@ -195,6 +195,7 @@ def get_image_browse_urls(user=None):
 
 
 def quit_thumb(filename):
+    """ Add at the end the file the word _thumb """
     return filename.replace('_thumb', '')
 
 def browse(request):
