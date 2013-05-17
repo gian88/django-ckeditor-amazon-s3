@@ -1,5 +1,30 @@
+<link href="/static/google-code-prettify/src/prettify.css" type="text/css" rel="stylesheet" />
+<link href="/static/google-code-prettify/styles/sons-of-obsidian.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="/static/google-code-prettify/src/prettify.js?lang=css&skin=Sons-Of-Obsidian"></script>
+
 <p><textarea{{ final_attrs|safe }}>{{ value }}</textarea></p>
-<div class="btn_output">+ Expandir<div class="output"></div></div>
+<div class="btn_output">+ Expandir <div class="output"></div></div>
 <script type="text/javascript">
+
+	$(document).ready(function() {
+		// Function that show the content of ckeditor in a div
+        $(".output").hide();
+        $(".btn_output").click(function () {
+            $(".output").toggle("slow");
+        });
+
+		codigo();
+        CKEDITOR.instances.{{ id }}.on('change', codigo);
+    });
+
     CKEDITOR.replace("{{ id }}", {{ config|safe }});
+	function codigo(){
+        // gets the value of the editor
+        output = CKEDITOR.instances.{{ id }}.getData();
+        // append the result into the div
+        $('.output').html(output);
+            // relaunch the prettify code
+        prettyPrint();
+
+	};
 </script>
