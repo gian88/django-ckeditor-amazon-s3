@@ -26,7 +26,7 @@ except ImportError:
         return fn
 
 THUMBNAIL_SIZE = (75, 75)
-S3BotoStorage = S3BotoStorage_AllPublic(bucket=settings.AWS_STORAGE_BUCKET_NAME)
+S3BotoStorage = S3BotoStorage_AllPublic(bucket=settings.AWS_STORAGE_BUCKET_NAME, acl=settings.AWS_DEFAULT_ACL)
 
 
 def get_available_name(name):

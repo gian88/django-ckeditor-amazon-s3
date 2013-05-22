@@ -26,6 +26,11 @@ Required
 
     CKEDITOR_UPLOAD_PATH = "uploads"
 
+#. Add a AWS_DEFAULT_ACL setting to the project's ``settings.py`` file. This setting specifies the permissions(ACL) of the image access by the Amazon S3. The values
+of the ACL is  ``private``, ``public-read``, ``public-read-write``, ``authenticated-read``.
+
+    AWS_DEFAULT_ACL = 'public-read'
+
 #. Run the ``collectstatic`` management command: ``$ /manage.py collectstatic``. This'll copy static CKEditor require media resources into the directory given by the ``STATIC_ROOT`` setting. See `Django's documentation on managing static files <https://docs.djangoproject.com/en/dev/howto/static-files>`_ for more info.
 
 #. Add CKEditor URL include to your project's ``urls.py`` file::

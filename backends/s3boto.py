@@ -43,6 +43,7 @@ SECRET_KEY_NAME = getattr(settings, 'AWS_SECRET_ACCESS_KEY', None)
 HEADERS = getattr(settings, 'AWS_HEADERS', {})
 STORAGE_BUCKET_NAME = getattr(settings, 'AWS_STORAGE_BUCKET_NAME', None)
 STORAGE_BUCKET_CNAME = getattr(settings, 'AWS_STORAGE_BUCKET_CNAME', None)
+STORAGE_CLOUDFRONT_CNAME = getattr(settings, 'AWS_STORAGE_CLOUDFRONT_CNAME', None)
 AWS_REGION = getattr(settings, 'AWS_REGION', 'us-east-1')
 AUTO_CREATE_BUCKET = getattr(settings, 'AWS_AUTO_CREATE_BUCKET', True)
 DEFAULT_ACL = getattr(settings, 'AWS_DEFAULT_ACL', 'public-read')
@@ -64,6 +65,7 @@ class S3BotoStorage(Storage):
 
     def __init__(self, bucket=STORAGE_BUCKET_NAME,
                        bucket_cname=STORAGE_BUCKET_CNAME,
+                       cloudfront_cname=STORAGE_CLOUDFRONT_CNAME,
                        region=AWS_REGION, access_key=None,
                        secret_key=None, acl=DEFAULT_ACL,
                        headers=HEADERS, gzip=IS_GZIPPED,
@@ -72,6 +74,7 @@ class S3BotoStorage(Storage):
                        force_no_ssl=False):
         self.bucket_name = bucket
         self.bucket_cname = bucket_cname
+        self.cloudfront_cname = cloudfront_cname
         self.host = self._get_host(region)
         self.acl = acl
         self.headers = headers
@@ -251,8 +254,8 @@ class S3BotoStorage_AllPublic(S3BotoStorage):
     WARNING: This backend makes absolutely no attempt to verify whether the
     given key exists on self.url(). This is much faster, but be aware.
     """
-    def __init__(self, *args, **kwargs):
-        super(S3BotoStorage_AllPublic, self).__init__(acl='public-read',
+    def __init__(self, acl='public-read', *args, **kwargs):
+        super(S3BotoStorage_AllPublic, self).__init__(acl=acl,
                                                       querystring_auth=False,
                                                       force_no_ssl=True,
                                                       *args, **kwargs)
@@ -266,6 +269,8 @@ class S3BotoStorage_AllPublic(S3BotoStorage):
 
         if self.bucket_cname:
             return "http://%s/%s" % (self.bucket_cname, name)
+        elif self.cloudfront_cname:
+            return "/%s/%s" % (self.cloudfront_cname, name)
         elif self.host:
             return "http://%s/%s/%s" % (self.host, self.bucket_name, name)
         # No host ? Then it's the default region
