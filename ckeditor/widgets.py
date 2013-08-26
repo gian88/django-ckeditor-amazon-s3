@@ -19,8 +19,12 @@ DEFAULT_CONFIG = {
     ],
     'toolbar_Full': [
         ['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
-        ['Image', 'Flash', 'Table', 'HorizontalRule','Link'],
+        ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ],
+        ['Image', 'Flash', 'Table', 'HorizontalRule','Link','Iframe'],
+        ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+        ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
         ['TextColor', 'BGColor'],
+        [ 'Maximize', 'ShowBlocks','-','About' ],
         ['Smiley', 'SpecialChar'], ['Source'],['pbckcode']
     ],
     'toolbar': 'Full',
