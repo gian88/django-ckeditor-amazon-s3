@@ -10,6 +10,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from backends.s3boto import S3BotoStorage_AllPublic
 from django.core.files.base import ContentFile
+from slughifi import slughifi
 
 try:
     from PIL import Image, ImageOps
@@ -58,6 +59,7 @@ def get_file_path(filename):
     ext = filename.split('.')[-1]
     filename_split = filename.rsplit('.', 1)
     file_name = filename_split[0]
+    file_name = slughifi(file_name)
     d = date.today()
     file_year = str(d.year)
     file_month = str(d.month).zfill(2)
@@ -95,7 +97,7 @@ def create_thumbnail(out, filename, types):
     else:
         imagefit = ImageOps.posterize(image, 8)
         buf= cStringIO.StringIO()
-        imagefit.save(buf, format= 'JPEG')
+        imagefit.save(buf, quality=95, format= 'JPEG')
         S3BotoStorage.save(filename, ContentFile(buf.getvalue()))
 
 
