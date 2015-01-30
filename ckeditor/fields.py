@@ -19,7 +19,7 @@ class RichTextField(models.TextField):
 
 
 class RichTextFormField(forms.fields.Field):
-    def __init__(self, config_name='default', *args, **kwargs):
+    def __init__(self,config_name ='default', max_length = None, *args, **kwargs):
         kwargs.update({'widget': CKEditorWidget(config_name=config_name)})
         super(RichTextFormField, self).__init__(*args, **kwargs)
 
