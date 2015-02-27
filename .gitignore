@@ -1,3 +1,4 @@
+build/*
 build/lib/backends/__init__.py
 build/lib/backends/s3boto.py
 build/lib/backends/s3boto_gunicorn_eventlet.py

@@ -29,6 +29,12 @@ except ImportError:
 THUMBNAIL_SIZE = (75, 75)
 S3BotoStorage = S3BotoStorage_AllPublic(bucket=settings.AWS_STORAGE_BUCKET_NAME, acl=settings.AWS_DEFAULT_ACL)
 
+FORMAT_FILE = {
+    '.gif' : 'GIF',
+    '.png' : 'PNG',
+    '.jpeg': 'JPEG',
+    '.jpg' : 'JPEG'
+}
 
 def get_available_name(name):
     """
@@ -45,6 +51,12 @@ def get_available_name(name):
         # file_ext includes the dot.
         name = os.path.join(dir_name, file_root + file_ext)
     return name
+
+def get_file_extension(name):
+    """ Funtion to get extension from file name"""
+    dir_name, file_name = os.path.split(name)
+    file_root, file_ext = os.path.splitext(file_name)
+    return file_ext.lower()
 
 def get_file_date():
     """ Funtion add the date to the file """
@@ -79,27 +91,32 @@ def create_thumbnail(out, filename, types):
     """ Generate the thumbnail when the types==True and when the types is False
         generate a new image with low resolution
     """
-    image = Image.open(cStringIO.StringIO(out))
 
-    # Convert to RGB if necessary
-    # Thanks to Limodou on DjangoSnippets.org
-    # http://www.djangosnippets.org/snippets/20/
-    if image.mode not in ('L', 'RGB'):
-        image = image.convert('RGB')
+    file_format = FORMAT_FILE[get_file_extension(filename)]
 
-    # scale and crop to thumbnail and the main image
-    if types:
-        imagefit = ImageOps.fit(image, THUMBNAIL_SIZE, Image.ANTIALIAS)
-        imagefit = ImageOps.posterize(imagefit, 8)
-        buf= cStringIO.StringIO()
-        imagefit.save(buf, format= 'JPEG')
-        S3BotoStorage.save(get_thumb_filename(filename), ContentFile(buf.getvalue()))
+    if file_format is not 'JPEG' and not types:
+        S3BotoStorage.save(filename, ContentFile(cStringIO.StringIO(out).getvalue()))
     else:
-        imagefit = ImageOps.posterize(image, 8)
-        buf= cStringIO.StringIO()
-        imagefit.save(buf, quality=95, format= 'JPEG')
-        S3BotoStorage.save(filename, ContentFile(buf.getvalue()))
+        image = Image.open(cStringIO.StringIO(out))
 
+        # Convert to RGB if necessary
+        # Thanks to Limodou on DjangoSnippets.org
+        # http://www.djangosnippets.org/snippets/20/
+        if image.mode not in ('L', 'RGB'):
+            image = image.convert('RGB')
+
+        # scale and crop to thumbnail and the main image
+        if types:
+            imagefit = ImageOps.fit(image, THUMBNAIL_SIZE, Image.ANTIALIAS)
+            imagefit = ImageOps.posterize(imagefit, 8)
+            buf= cStringIO.StringIO()
+            imagefit.save(buf, format= 'JPEG')
+            S3BotoStorage.save(get_thumb_filename(filename), ContentFile(buf.getvalue()))
+        else:
+            buf = cStringIO.StringIO()
+            imagefit = ImageOps.posterize(image, 8)
+            imagefit.save( buf, quality=95, format = 'JPEG' )
+            S3BotoStorage.save(filename, ContentFile(buf.getvalue()))
 
 
 def get_media_url(path):
