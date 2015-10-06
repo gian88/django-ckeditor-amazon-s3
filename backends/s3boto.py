@@ -18,7 +18,7 @@ from django.core.files.storage import Storage
 from django.core.exceptions import ImproperlyConfigured
 
 try:
-    from boto.s3.connection import S3Connection
+    from boto.s3.connection import S3Connection, OrdinaryCallingFormat
     from boto.exception import S3ResponseError
     from boto.s3.key import Key
 except ImportError:
@@ -90,7 +90,7 @@ class S3BotoStorage(Storage):
             access_key, secret_key = self._get_access_keys()
 
         self.connection = S3Connection(
-            access_key, secret_key, host=self.host,
+            access_key, secret_key, host=self.host, calling_format=OrdinaryCallingFormat(),
         )
 
     @property
